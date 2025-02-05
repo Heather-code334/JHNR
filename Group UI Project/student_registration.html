@@ -5,13 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        .container { max-width: 400px; margin: auto; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
         .hidden { display: none; }
+        .nav {
+            margin-bottom: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: white;
+            background-color: #459fb6;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        a:hover {
+            background-color: #40ac61;
+        }
+        button {
+            background-color: #459fb6;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #40ac61;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="nav">
+        <a href="home.html">Home</a> |
+        <a href="course_search.html">Course Search</a> |
+        <a href="student_registration.html">Student Registration</a> |
+        <a href="instructor_schedule.html">Instructor Schedules</a>
+    </div>
+
+    <div class="container" id="loginContainer">
         <h2>Student Login</h2>
         <input type="text" id="username" placeholder="Enter Username" required>
         <button onclick="login()">Login</button>
@@ -30,6 +78,8 @@
         </select>
         <button onclick="registerSession()">Register</button>
         <p id="error" style="color: red;"></p>
+        
+        <button onclick="proceed()">Proceed</button>
     </div>
 
     <script>
@@ -37,7 +87,7 @@
         function login() {
             const username = document.getElementById('username').value;
             if (username.trim() !== "") {
-                document.querySelector('.container').classList.add('hidden');
+                document.getElementById('loginContainer').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
                 document.getElementById('studentName').innerText = username;
             }
@@ -54,6 +104,9 @@
                 document.getElementById('enrolledSessions').innerHTML += `<li>${session}</li>`;
                 error.textContent = "";
             }
+        }
+        function proceed() {
+            window.location.href = "course_search.html";
         }
     </script>
 </body>
