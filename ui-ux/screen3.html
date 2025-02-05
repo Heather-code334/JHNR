@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { max-width: 400px; margin: auto; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Student Login</h2>
+        <input type="text" id="username" placeholder="Enter Username" required>
+        <button onclick="login()">Login</button>
+    </div>
+    
+    <div class="container hidden" id="dashboard">
+        <h2>Welcome, <span id="studentName"></span></h2>
+        <h3>Enrolled Sessions</h3>
+        <ul id="enrolledSessions"></ul>
+        
+        <h3>Register for a New Session</h3>
+        <select id="sessionSelect">
+            <option value="Math 101">Math 101</option>
+            <option value="History 201">History 201</option>
+            <option value="Science 301">Science 301</option>
+        </select>
+        <button onclick="registerSession()">Register</button>
+        <p id="error" style="color: red;"></p>
+    </div>
+
+    <script>
+        let enrolled = [];
+        function login() {
+            const username = document.getElementById('username').value;
+            if (username.trim() !== "") {
+                document.querySelector('.container').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('studentName').innerText = username;
+            }
+        }
+        function registerSession() {
+            const session = document.getElementById('sessionSelect').value;
+            const error = document.getElementById('error');
+            if (enrolled.includes(session)) {
+                error.textContent = "You are already enrolled in this session!";
+            } else if (enrolled.length >= 3) {
+                error.textContent = "Enrollment limit reached!";
+            } else {
+                enrolled.push(session);
+                document.getElementById('enrolledSessions').innerHTML += `<li>${session}</li>`;
+                error.textContent = "";
+            }
+        }
+    </script>
+</body>
+</html>
