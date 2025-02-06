@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f4f4f9;
+            text-align: center;
+            padding: 20px;
+        }
+        h2, h3 {
+            color: #333;
+        }
+        .container { 
+            max-width: 400px; 
+            margin: auto; 
+            background: white; 
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #459fb6;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #40ac61;
+        }
+        .hidden { display: none; }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        nav {
+            margin-bottom: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: white;
+            background-color: #333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        a:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">Back to Home</a>
+    </nav>
+
+    <div class="container" id="loginContainer">
+        <h2>Student Login</h2>
+        <input type="text" id="username" placeholder="Enter Username" required>
+        <button onclick="login()">Login</button>
+    </div>
+    
+    <div class="container hidden" id="dashboard">
+        <h2>Welcome, <span id="studentName"></span></h2>
+
+        <h3>Enrolled Sessions</h3>
+        <ul id="enrolledSessions"></ul>
+
+        <h3>Register for a New Session</h3>
+        <select id="sessionSelect">
+            <option value="Math 101">Math 101</option>
+            <option value="History 201">History 201</option>
+            <option value="Science 301">Science 301</option>
+        </select>
+        <button onclick="registerSession()">Register</button>
+        <p id="error" style="color: red;"></p>
+    </div>
+
+    <script>
+        let enrolled = [];
+
+        function login() {
+            const username = document.getElementById('username').value.trim();
+            if (username !== "") {
+                localStorage.setItem("studentName", username);
+                document.getElementById('loginContainer').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('studentName').innerText = username;
+                loadEnrolledSessions();
+            }
+        }
+
+        function registerSession() {
+            const session = document.getElementById('sessionSelect').value;
+            const error = document.getElementById('error');
+
+            if (enrolled.includes(session)) {
+                error.textContent = "You are already enrolled in this session!";
+            } else if (enrolled.length >= 3) {
+                error.textContent = "Enrollment limit reached!";
+            } else {
+                enrolled.push(session);
+                saveEnrolledSessions();
+                displayEnrolledSessions();
+                error.textContent = "";
+            }
+        }
+
+        function saveEnrolledSessions() {
+            localStorage.setItem("enrolledSessions", JSON.stringify(enrolled));
+        }
+
+        function loadEnrolledSessions() {
+            const storedSessions = JSON.parse(localStorage.getItem("enrolledSessions")) || [];
+            enrolled = storedSessions;
+            displayEnrolledSessions();
+        }
+
+        function displayEnrolledSessions() {
+            const sessionList = document.getElementById('enrolledSessions');
+            sessionList.innerHTML = "";
+            enrolled.forEach(session => {
+                const listItem = document.createElement("li");
+                listItem.textContent = session;
+                sessionList.appendChild(listItem);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const storedName = localStorage.getItem("studentName");
+            if (storedName) {
+                document.getElementById('loginContainer').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('studentName').innerText = storedName;
+                loadEnrolledSessions();
+            }
+        });
+
+    </script>
+
+</body>
+</html>
